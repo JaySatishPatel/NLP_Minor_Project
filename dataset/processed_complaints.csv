@@ -1,4 +1,4 @@
-complaint,category,Sentiment,clean_text,word_count,character_count
+complaint,category,sentiment,clean_text,word_count,character_count
 The quantity is not proportional to the rate.,Quantity-Price Concern,Negative,the quantity is not proportional to the rate,8,44
 The serving feels too meager for the price.,Quantity-Price Concern,Negative,the serving feels too meager for the price,8,42
 The cash counter gave me a higher price than shown.,Price Mismatch,Negative,the cash counter gave me a higher price than shown,10,50
