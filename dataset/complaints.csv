@@ -1,4 +1,4 @@
-Complaint,Category,Sentiment
+complaint,category,sentiment
 The quantity is not proportional to the rate.,Quantity-Price Concern,Negative
 The serving feels too meager for the price.,Quantity-Price Concern,Negative
 The cash counter gave me a higher price than shown.,Price Mismatch,Negative
