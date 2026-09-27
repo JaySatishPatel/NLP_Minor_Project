@@ -1,0 +1,6 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.pkl.bak
+.pytest_cache/
+.DS_Store

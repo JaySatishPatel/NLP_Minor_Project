@@ -4,8 +4,7 @@
 # ============================================================
 #
 # Purpose:
-# Classify a canteen complaint into one of the following:
-#
+# Classify a canteen complaint into one of five pricing categories:
 # 1. High Price
 # 2. Price Mismatch
 # 3. Quantity-Price Concern
@@ -18,656 +17,257 @@
 # Output:
 #     models/complaint_classifier.pkl
 #     models/complaint_vectorizer.pkl
+#     reports/figures/*.png
 #
-# ============================================================
-
-
-# ============================================================
-# 1. IMPORT LIBRARIES
 # ============================================================
 
 import os
-import re
+import sys
 import joblib
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 import seaborn as sns
-
-from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
-
-from sklearn.metrics import (
-    accuracy_score,
-    classification_report,
-    confusion_matrix
-)
-
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+from sklearn.model_selection import train_test_split
 
 # ============================================================
-# 2. FILE PATHS
+# 1. PATH CONFIGURATION (Dynamic project root)
 # ============================================================
 
-DATASET_PATH = "dataset/processed_complaints.csv"
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
 
-MODEL_DIR = "models"
+DATASET_PATH = os.path.join(PROJECT_ROOT, "dataset", "processed_complaints.csv")
+MODEL_DIR = os.path.join(PROJECT_ROOT, "models")
+MODEL_PATH = os.path.join(MODEL_DIR, "complaint_classifier.pkl")
+VECTORIZER_PATH = os.path.join(MODEL_DIR, "complaint_vectorizer.pkl")
+REPORTS_DIR = os.path.join(PROJECT_ROOT, "reports", "figures")
 
-MODEL_PATH = os.path.join(
-    MODEL_DIR,
-    "complaint_classifier.pkl"
-)
-
-VECTORIZER_PATH = os.path.join(
-    MODEL_DIR,
-    "complaint_vectorizer.pkl"
-)
-
-
-# Create models directory if it doesn't exist
 os.makedirs(MODEL_DIR, exist_ok=True)
+os.makedirs(REPORTS_DIR, exist_ok=True)
+
+# Import shared preprocessing pipeline
+try:
+    from src.preprocessing import clean_text
+except ImportError:
+    try:
+        from preprocessing import clean_text
+    except ImportError:
+        import re
+
+        def clean_text(text):
+            text = str(text).lower()
+            text = re.sub(r"http\S+|www\S+", " ", text)
+            text = re.sub(r"\S+@\S+", " ", text)
+            text = re.sub(r"<.*?>", " ", text)
+            text = re.sub(r"[^a-zA-Z0-9\s]", " ", text)
+            text = re.sub(r"\s+", " ", text)
+            return text.strip()
 
 
 # ============================================================
-# 3. LOAD PROCESSED DATASET
+# 2. INFERENCE FUNCTIONS
 # ============================================================
 
-if not os.path.exists(DATASET_PATH):
-
-    raise FileNotFoundError(
-        f"Dataset not found at: {DATASET_PATH}\n"
-        "Run preprocessing.py first."
-    )
+_cached_model = None
+_cached_vectorizer = None
 
 
-df = pd.read_csv(DATASET_PATH)
+def load_classifier_assets():
+    """Load cached complaint classifier model and vectorizer."""
+    global _cached_model, _cached_vectorizer
+    if _cached_model is None or _cached_vectorizer is None:
+        if not os.path.exists(MODEL_PATH) or not os.path.exists(VECTORIZER_PATH):
+            raise FileNotFoundError(
+                f"Complaint classifier model/vectorizer not found in {MODEL_DIR}. "
+                "Run train_complaint_classifier() first."
+            )
+        _cached_model = joblib.load(MODEL_PATH)
+        _cached_vectorizer = joblib.load(VECTORIZER_PATH)
+    return _cached_model, _cached_vectorizer
 
 
-print("=" * 70)
-print("PRICE COMPLAINT CLASSIFIER")
-print("=" * 70)
+def predict_category(text, model=None, vectorizer=None):
+    """
+    Predict the pricing category for a complaint text.
+    Returns:
+        category (str): predicted category
+        confidence (float): highest class probability (0.0 to 1.0)
+        probabilities (dict): probability breakdown across all categories
+    """
+    if model is None or vectorizer is None:
+        model, vectorizer = load_classifier_assets()
 
-print("\nDataset loaded successfully.")
+    cleaned = clean_text(text)
+    text_vector = vectorizer.transform([cleaned])
 
-print("\nDataset shape:")
-print(df.shape)
+    prediction = model.predict(text_vector)[0]
+    probs = model.predict_proba(text_vector)[0]
+    prob_dict = {cls: float(prob) for cls, prob in zip(model.classes_, probs)}
+    confidence = float(max(probs))
 
-print("\nColumns:")
-print(df.columns.tolist())
-
-print("\nFirst 5 records:")
-print(df.head())
+    return prediction, confidence, prob_dict
 
 
 # ============================================================
-# 4. CHECK REQUIRED COLUMNS
+# 3. MODEL TRAINING PIPELINE
 # ============================================================
 
-required_columns = [
-    "clean_text",
-    "category"
-]
+def train_complaint_classifier(dataset_path=DATASET_PATH, save_figures=True, show_figures=False, save_model=True):
+    """
+    Trains the multi-class complaint classification model, evaluates metrics,
+    saves evaluation charts, and persists model & vectorizer.
+    """
+    print("=" * 70)
+    print("PRICE COMPLAINT CLASSIFIER - TRAINING PIPELINE")
+    print("=" * 70)
 
-for column in required_columns:
-
-    if column not in df.columns:
-
-        raise ValueError(
-            f"Required column '{column}' "
-            "is missing from the dataset."
+    if not os.path.exists(dataset_path):
+        raise FileNotFoundError(
+            f"Dataset not found at: {dataset_path}\n"
+            "Run preprocessing.py first."
         )
 
-
-print("\nRequired columns are present.")
-
-
-# ============================================================
-# 5. REMOVE MISSING VALUES
-# ============================================================
-
-print("\n" + "=" * 70)
-print("MISSING VALUE CHECK")
-print("=" * 70)
-
-print(
-    df[required_columns].isnull().sum()
-)
-
-
-df = df.dropna(
-    subset=required_columns
-).copy()
-
-
-# ============================================================
-# 6. REMOVE DUPLICATE RECORDS
-# ============================================================
-
-duplicate_count = df.duplicated(
-    subset=["clean_text"]
-).sum()
-
-print("\nDuplicate complaints:", duplicate_count)
-
-
-df = df.drop_duplicates(
-    subset=["clean_text"]
-).copy()
-
-
-# ============================================================
-# 7. CHECK CATEGORY DISTRIBUTION
-# ============================================================
-
-print("\n" + "=" * 70)
-print("COMPLAINT CATEGORY DISTRIBUTION")
-print("=" * 70)
-
-category_counts = (
-    df["category"]
-    .value_counts()
-)
-
-print(category_counts)
-
-
-# ============================================================
-# 8. CATEGORY DISTRIBUTION VISUALIZATION
-# ============================================================
-
-plt.figure(figsize=(10, 6))
-
-sns.countplot(
-    data=df,
-    x="category",
-    order=category_counts.index
-)
-
-plt.title(
-    "Complaint Category Distribution"
-)
-
-plt.xlabel(
-    "Complaint Category"
-)
-
-plt.ylabel(
-    "Number of Complaints"
-)
-
-plt.xticks(
-    rotation=30
-)
-
-plt.tight_layout()
-
-plt.show()
-
-
-# ============================================================
-# 9. CHECK CATEGORY BALANCE
-# ============================================================
-
-category_percentage = (
-    df["category"]
-    .value_counts(normalize=True)
-    .mul(100)
-    .round(2)
-)
-
-print("\nCategory percentage:")
-print(category_percentage)
-
-
-# ============================================================
-# 10. PREPARE INPUT AND TARGET
-# ============================================================
-
-X = df["clean_text"]
-
-y = df["category"]
-
-
-print("\n" + "=" * 70)
-print("INPUT AND TARGET")
-print("=" * 70)
-
-print("Input  : clean_text")
-print("Target : category")
-
-
-# ============================================================
-# 11. TRAIN-TEST SPLIT
-# ============================================================
-
-X_train, X_test, y_train, y_test = train_test_split(
-
-    X,
-    y,
-
-    test_size=0.20,
-
-    random_state=42,
-
-    # Maintain category proportions
-    stratify=y
-)
-
-
-print("\n" + "=" * 70)
-print("TRAIN / TEST SPLIT")
-print("=" * 70)
-
-print(
-    "Training samples:",
-    len(X_train)
-)
-
-print(
-    "Testing samples:",
-    len(X_test)
-)
-
-print("\nTraining category distribution:")
-print(y_train.value_counts())
-
-print("\nTesting category distribution:")
-print(y_test.value_counts())
-
-
-# ============================================================
-# 12. TF-IDF FEATURE EXTRACTION
-# ============================================================
-
-vectorizer = TfidfVectorizer(
-
-    # Maximum number of features
-    max_features=5000,
-
-    # Use individual words and two-word combinations
-    ngram_range=(1, 2),
-
-    # Improve representation of frequently occurring terms
-    sublinear_tf=True
-)
-
-
-# Fit only on training data
-X_train_tfidf = vectorizer.fit_transform(
-    X_train
-)
-
-
-# Transform testing data
-X_test_tfidf = vectorizer.transform(
-    X_test
-)
-
-
-print("\n" + "=" * 70)
-print("TF-IDF FEATURE EXTRACTION")
-print("=" * 70)
-
-print(
-    "Training TF-IDF shape:",
-    X_train_tfidf.shape
-)
-
-print(
-    "Testing TF-IDF shape:",
-    X_test_tfidf.shape
-)
-
-
-# ============================================================
-# 13. TRAIN COMPLAINT CLASSIFICATION MODEL
-# ============================================================
-#
-# Logistic Regression is a strong baseline for
-# text classification with TF-IDF features.
-#
-# class_weight="balanced" is included in case your
-# complaint categories are not equally represented.
-#
-# ============================================================
-
-model = LogisticRegression(
-
-    max_iter=1000,
-
-    class_weight="balanced",
-
-    random_state=42
-)
-
-
-model.fit(
-    X_train_tfidf,
-    y_train
-)
-
-
-print("\n" + "=" * 70)
-print("MODEL TRAINING")
-print("=" * 70)
-
-print(
-    "Complaint classification model "
-    "trained successfully."
-)
-
-print(
-    "\nClasses learned by the model:"
-)
-
-for class_name in model.classes_:
-    print("-", class_name)
-
-
-# ============================================================
-# 14. MAKE TEST PREDICTIONS
-# ============================================================
-
-y_pred = model.predict(
-    X_test_tfidf
-)
-
-
-# ============================================================
-# 15. CALCULATE ACCURACY
-# ============================================================
-
-accuracy = accuracy_score(
-    y_test,
-    y_pred
-)
-
-
-print("\n" + "=" * 70)
-print("MODEL ACCURACY")
-print("=" * 70)
-
-print(
-    f"Accuracy: {accuracy:.4f}"
-)
-
-print(
-    f"Accuracy: {accuracy * 100:.2f}%"
-)
-
-
-# ============================================================
-# 16. CLASSIFICATION REPORT
-# ============================================================
-
-print("\n" + "=" * 70)
-print("CLASSIFICATION REPORT")
-print("=" * 70)
-
-print(
-    classification_report(
-        y_test,
-        y_pred,
-        zero_division=0
-    )
-)
-
-
-# ============================================================
-# 17. CONFUSION MATRIX
-# ============================================================
-
-cm = confusion_matrix(
-    y_test,
-    y_pred,
-    labels=model.classes_
-)
-
-
-plt.figure(figsize=(10, 8))
-
-sns.heatmap(
-
-    cm,
-
-    annot=True,
-
-    fmt="d",
-
-    cmap="Blues",
-
-    xticklabels=model.classes_,
-
-    yticklabels=model.classes_
-)
-
-
-plt.title(
-    "Complaint Category Classification - Confusion Matrix"
-)
-
-plt.xlabel(
-    "Predicted Category"
-)
-
-plt.ylabel(
-    "Actual Category"
-)
-
-plt.xticks(
-    rotation=30
-)
-
-plt.yticks(
-    rotation=0
-)
-
-plt.tight_layout()
-
-plt.show()
-
-
-# ============================================================
-# 18. PREPROCESS NEW COMPLAINT
-# ============================================================
-
-def preprocess_new_complaint(text):
-    """
-    Apply the same basic preprocessing to a new
-    complaint before classification.
-    """
-
-    text = str(text)
-
-    # Convert to lowercase
-    text = text.lower()
-
-    # Remove URLs
-    text = re.sub(
-        r"http\S+|www\S+",
-        " ",
-        text
+    df = pd.read_csv(dataset_path)
+    print(f"Dataset loaded: {df.shape[0]} rows, {df.shape[1]} columns")
+
+    required_columns = ["clean_text", "category"]
+    for col in required_columns:
+        if col not in df.columns:
+            raise ValueError(f"Required column '{col}' missing from dataset.")
+
+    df = df.dropna(subset=required_columns).copy()
+    df = df.drop_duplicates(subset=["clean_text"]).copy()
+
+    category_counts = df["category"].value_counts()
+    print("\nCategory distribution:")
+    print(category_counts)
+
+    # Visualize Category Distribution
+    if save_figures or show_figures:
+        plt.figure(figsize=(10, 5))
+        sns.countplot(
+            data=df,
+            x="category",
+            order=category_counts.index,
+            hue="category",
+            palette="Set2",
+            legend=False
+        )
+        plt.title("Complaint Category Distribution", fontsize=14, fontweight="bold")
+        plt.xlabel("Category", fontsize=11)
+        plt.ylabel("Number of Complaints", fontsize=11)
+        plt.xticks(rotation=25, ha="right")
+        plt.tight_layout()
+        if save_figures:
+            dist_fig = os.path.join(REPORTS_DIR, "complaint_category_distribution.png")
+            plt.savefig(dist_fig, dpi=300)
+            print(f"Saved category distribution chart: {dist_fig}")
+        if show_figures:
+            plt.show()
+        plt.close()
+
+    # Train/Test Split
+    X = df["clean_text"]
+    y = df["category"]
+
+    X_train, X_test, y_train, y_test = train_test_split(
+        X,
+        y,
+        test_size=0.20,
+        random_state=42,
+        stratify=y
     )
 
-    # Remove email addresses
-    text = re.sub(
-        r"\S+@\S+",
-        " ",
-        text
+    print(f"\nTraining samples: {len(X_train)} | Testing samples: {len(X_test)}")
+
+    # TF-IDF Feature Extraction
+    vectorizer = TfidfVectorizer(
+        max_features=5000,
+        ngram_range=(1, 2),
+        sublinear_tf=True
     )
+    X_train_tfidf = vectorizer.fit_transform(X_train)
+    X_test_tfidf = vectorizer.transform(X_test)
 
-    # Remove HTML tags
-    text = re.sub(
-        r"<.*?>",
-        " ",
-        text
+    # Train Logistic Regression Classifier
+    model = LogisticRegression(
+        max_iter=1000,
+        class_weight="balanced",
+        random_state=42
     )
+    model.fit(X_train_tfidf, y_train)
 
-    # Remove special characters
-    text = re.sub(
-        r"[^a-zA-Z0-9\s]",
-        " ",
-        text
-    )
+    print("\nLearned Classes:")
+    for cls in model.classes_:
+        print(f" - {cls}")
 
-    # Normalize spaces
-    text = re.sub(
-        r"\s+",
-        " ",
-        text
-    )
+    # Evaluate Model
+    y_pred = model.predict(X_test_tfidf)
+    accuracy = accuracy_score(y_test, y_pred)
+    print(f"\nModel Accuracy: {accuracy:.4f} ({accuracy * 100:.2f}%)")
 
-    return text.strip()
+    print("\nClassification Report:")
+    report = classification_report(y_test, y_pred, zero_division=0)
+    print(report)
 
+    # Confusion Matrix
+    cm = confusion_matrix(y_test, y_pred, labels=model.classes_)
+    if save_figures or show_figures:
+        plt.figure(figsize=(9, 7))
+        sns.heatmap(
+            cm,
+            annot=True,
+            fmt="d",
+            cmap="Blues",
+            xticklabels=model.classes_,
+            yticklabels=model.classes_
+        )
+        plt.title("Complaint Category - Confusion Matrix", fontsize=13, fontweight="bold")
+        plt.xlabel("Predicted Category", fontsize=11)
+        plt.ylabel("Actual Category", fontsize=11)
+        plt.xticks(rotation=25, ha="right")
+        plt.yticks(rotation=0)
+        plt.tight_layout()
+        if save_figures:
+            cm_fig = os.path.join(REPORTS_DIR, "complaint_confusion_matrix.png")
+            plt.savefig(cm_fig, dpi=300)
+            print(f"Saved confusion matrix: {cm_fig}")
+        if show_figures:
+            plt.show()
+        plt.close()
 
-# ============================================================
-# 19. PREDICTION FUNCTION
-# ============================================================
+    # Save Model & Vectorizer
+    if save_model:
+        joblib.dump(model, MODEL_PATH)
+        joblib.dump(vectorizer, VECTORIZER_PATH)
+        print(f"\nSaved trained classifier: {MODEL_PATH}")
+        print(f"Saved vectorizer:         {VECTORIZER_PATH}")
 
-def predict_category(text):
-    """
-    Predict the pricing-related category
-    of a new complaint.
+    # Test Sample Queries
+    print("\n" + "=" * 70)
+    print("TESTING SAMPLE COMPLAINTS")
+    print("=" * 70)
+    test_complaints = [
+        "The price of the samosa is too high.",
+        "I was charged 50 rupees but the menu says 40.",
+        "The quantity is very small for this price.",
+        "The price of tea has increased this month.",
+        "The canteen should review its food prices."
+    ]
+    for complaint in test_complaints:
+        category, conf, probs = predict_category(complaint, model, vectorizer)
+        print(f"Complaint:  \"{complaint}\"")
+        print(f"Category:   {category} ({conf:.1%} confidence)\n")
 
-    Returns:
-        category
-        confidence
-    """
-
-    # Preprocess new complaint
-    clean_text = preprocess_new_complaint(
-        text
-    )
-
-    # Convert to TF-IDF
-    text_vector = vectorizer.transform(
-        [clean_text]
-    )
-
-    # Predict category
-    prediction = model.predict(
-        text_vector
-    )[0]
-
-    # Get probabilities
-    probabilities = model.predict_proba(
-        text_vector
-    )[0]
-
-    # Get highest probability
-    confidence = max(
-        probabilities
-    )
-
-    return prediction, confidence
-
-
-# ============================================================
-# 20. TEST NEW COMPLAINTS
-# ============================================================
-
-print("\n" + "=" * 70)
-print("TESTING NEW COMPLAINTS")
-print("=" * 70)
-
-
-test_complaints = [
-
-    "The price of the samosa is too high.",
-
-    "I was charged 50 rupees but the menu says 40.",
-
-    "The quantity is very small for this price.",
-
-    "The price of tea has increased this month.",
-
-    "The canteen should review its food prices."
-]
+    print("=" * 70)
+    print("COMPLAINT CLASSIFIER TRAINING COMPLETED")
+    print("=" * 70)
+    return model, vectorizer, accuracy
 
 
-for complaint in test_complaints:
-
-    category, confidence = predict_category(
-        complaint
-    )
-
-    print("\nComplaint:")
-    print(complaint)
-
-    print(
-        "Predicted Category:",
-        category
-    )
-
-    print(
-        f"Confidence: {confidence:.2%}"
-    )
-
-
-# ============================================================
-# 21. SAVE MODEL
-# ============================================================
-
-joblib.dump(
-    model,
-    MODEL_PATH
-)
-
-
-# ============================================================
-# 22. SAVE TF-IDF VECTORIZER
-# ============================================================
-
-joblib.dump(
-    vectorizer,
-    VECTORIZER_PATH
-)
-
-
-print("\n" + "=" * 70)
-print("MODEL SAVED")
-print("=" * 70)
-
-print(
-    "Classifier:",
-    MODEL_PATH
-)
-
-print(
-    "Vectorizer:",
-    VECTORIZER_PATH
-)
-
-
-# ============================================================
-# 23. FINAL SUMMARY
-# ============================================================
-
-print("\n" + "=" * 70)
-print("COMPLAINT CLASSIFICATION COMPLETED")
-print("=" * 70)
-
-print(
-    "\nTotal records used:",
-    len(df)
-)
-
-print(
-    "Number of categories:",
-    len(model.classes_)
-)
-
-print(
-    f"Model Accuracy: {accuracy * 100:.2f}%"
-)
-
-print(
-    "\nCategories:"
-)
-
-for category in model.classes_:
-    print("-", category)
-
-print(
-    "\nThe complaint classification model "
-    "is ready for integration."
-)
+if __name__ == "__main__":
+    train_complaint_classifier(save_figures=True, show_figures=False)
