@@ -1,0 +1,361 @@
+Complaint,Category,Sentiment
+The quantity is not proportional to the rate.,Quantity-Price Concern,Negative
+The serving feels too meager for the price.,Quantity-Price Concern,Negative
+The cash counter gave me a higher price than shown.,Price Mismatch,Negative
+The platter is small for the price asked.,Quantity-Price Concern,Negative
+This menu item has become much more expensive recently.,Price Increase,Negative
+I saw a sharp increase in the tea price.,Price Increase,Negative
+The snack is affordable and still tasty.,General Price Complaint,Positive
+I expected a lower price for this item.,High Price,Negative
+The food is over-priced compared to its quality.,General Price Complaint,Negative
+The menu price and billed price are inconsistent.,Price Mismatch,Negative
+The bill charged me 150 even though the menu said 125.,Price Mismatch,Negative
+The order is way too small for the money.,Quantity-Price Concern,Negative
+The item was sold at a higher rate than the menu indicated.,Price Mismatch,Negative
+This is very expensive for a quick bite.,High Price,Negative
+This item used to be cheaper; now the price has jumped.,Price Increase,Negative
+The order was short in quantity for the amount billed.,Quantity-Price Concern,Negative
+"The dosa is pricier now than before, and it is not fair.",Price Increase,Negative
+The printed rate was ?30 but I was charged ?45.,Price Mismatch,Negative
+I feel the price is a bit much for this item.,General Price Complaint,Negative
+The bill had a different price than the menu label.,Price Mismatch,Negative
+The cashier charged me 80 when the display showed 65.,Price Mismatch,Negative
+The quantity is very low compared to the cost.,Quantity-Price Concern,Negative
+The food portion is tiny compared to the cost.,Quantity-Price Concern,Negative
+The size does not match the price tag.,Quantity-Price Concern,Negative
+The table list shows 160 but the payment was 190.,Price Mismatch,Negative
+The rate went up again and this is frustrating.,Price Increase,Negative
+The quantity is not enough even for one person.,Quantity-Price Concern,Negative
+This is a fair price for the portion served.,General Price Complaint,Positive
+The sandwich costs more now than it did last month.,Price Increase,Negative
+The burger is priced well and feels worth it.,General Price Complaint,Positive
+The pricing seems a bit high for a regular meal.,General Price Complaint,Negative
+This snack feels overpriced and not worth buying.,High Price,Negative
+The value is poor because the portion is tiny.,Quantity-Price Concern,Negative
+The sandwich has too little filling for the price.,Quantity-Price Concern,Negative
+The sandwich is priced fairly and tastes great.,General Price Complaint,Positive
+The same coffee now costs more than earlier.,Price Increase,Negative
+The food is expensive for the value provided.,General Price Complaint,Negative
+The price of the salad is too high for a simple item.,High Price,Negative
+"I was billed 55, but the menu quoted 42.",Price Mismatch,Negative
+Why are the prices increasing every few days?,Price Increase,Negative
+The rise in cost is hard to justify in this market.,Price Increase,Negative
+This portion is too small to justify the cost.,Quantity-Price Concern,Negative
+This soup is too expensive compared to nearby places.,High Price,Negative
+This item was cheaper a few weeks back.,Price Increase,Negative
+I noticed a recent increase in the price of the samosa.,Price Increase,Negative
+The cost of the biscuits is high and unreasonable.,High Price,Negative
+The quantity is low and the price is high.,Quantity-Price Concern,Negative
+I was billed 100 after seeing 85 on the board.,Price Mismatch,Negative
+The portion size should be bigger for this price.,Quantity-Price Concern,Negative
+The price of the cutlet is unreasonable.,High Price,Negative
+Food prices here are acceptable and not excessive.,General Price Complaint,Positive
+The item cost 60 at the counter although it was marked 48.,Price Mismatch,Negative
+Food prices are increasing too quickly.,Price Increase,Negative
+I was charged 70 instead of the listed 55.,Price Mismatch,Negative
+I ordered a tea and was charged 20 instead of 15.,Price Mismatch,Negative
+This snack is too costly for the serving size.,High Price,Negative
+Why has the burger price gone up suddenly?,Price Increase,Negative
+"I paid 40 for the sandwich, but the menu says 30.",Price Mismatch,Negative
+This is poor value because the portion is tiny.,Quantity-Price Concern,Negative
+The burger price rose again without any change in quality.,Price Increase,Negative
+The portion is tiny despite the charge.,Quantity-Price Concern,Negative
+The price mismatch between the menu and the receipt is unfair.,Price Mismatch,Negative
+The overall pricing seems less than fair.,General Price Complaint,Negative
+The overall pricing seems less than fair.,General Price Complaint,Negative
+The price of the shakshuka is much too high.,High Price,Negative
+I ordered the pizza and was charged 150 instead of 130.,Price Mismatch,Negative
+I expected a bigger portion for the price paid.,Quantity-Price Concern,Negative
+The mutton roll is priced too high.,High Price,Negative
+The menu listed 70 but I paid 90.,Price Mismatch,Negative
+The kachori price is too high for the quantity.,High Price,Negative
+This price increase is not reasonable for a small snack.,Price Increase,Negative
+The cost of my usual snack has gone up unexpectedly.,Price Increase,Negative
+This item is too expensive for a casual snack.,General Price Complaint,Negative
+The price of the milkshake has gone up noticeably.,Price Increase,Negative
+The quantity is very less for this price.,Quantity-Price Concern,Negative
+The cost of coffee increased without warning.,Price Increase,Negative
+Food prices are not justified in this shop.,General Price Complaint,Negative
+Food prices have been rising and the quality remains the same.,Price Increase,Negative
+The cost of the curry increased compared to last time.,Price Increase,Negative
+The rise in tea cost is unreasonable.,Price Increase,Negative
+This order had a price mismatch at checkout.,Price Mismatch,Negative
+The price has risen and there is no explanation.,Price Increase,Negative
+Poor quantity-to-price ratio for this item.,Quantity-Price Concern,Negative
+The price is fair for the dish quality.,General Price Complaint,Positive
+The item is underfilled for the price it sells at.,Quantity-Price Concern,Negative
+The listed price was 32 but they took 45 from me.,Price Mismatch,Negative
+The item is expensive but extremely small.,Quantity-Price Concern,Negative
+The amount charged is high but the quantity is low.,Quantity-Price Concern,Negative
+The sandwich is priced much higher than similar outlets.,High Price,Negative
+The quantity is poor for the price of this burger.,Quantity-Price Concern,Negative
+The pricing feels unfair for a simple product.,High Price,Negative
+The bag is very light for the price given.,Quantity-Price Concern,Negative
+The menu displayed 145 but the bill total was 180.,Price Mismatch,Negative
+The food prices are higher than nearby alternatives.,General Price Complaint,Negative
+The price of the samosa is too high for the portion served.,High Price,Negative
+The food price is reasonable compared to other caf?s.,General Price Complaint,Positive
+The meal is clearly overpriced for the quality.,High Price,Negative
+The price of the food is reasonable for the quality offered.,General Price Complaint,Positive
+"The bill shows 120, while the menu price is 95.",Price Mismatch,Negative
+The rate has climbed compared to earlier this year.,Price Increase,Negative
+The burger now costs more than last month for the same size.,Price Increase,Negative
+The bill is inconsistent with the menu display.,Price Mismatch,Negative
+The cashier charged me 80 when the display showed 65.,Price Mismatch,Negative
+The tea price has risen recently and feels excessive.,Price Increase,Negative
+The price of the samosa increased a lot this month.,Price Increase,Negative
+"The price board says 65, yet my bill was 82.",Price Mismatch,Negative
+I was charged 90 while the sticker said 70.,Price Mismatch,Negative
+The fries are priced higher than the market standard.,High Price,Negative
+The price is slightly on the higher side.,General Price Complaint,Negative
+The serving size is disappointing for this price.,Quantity-Price Concern,Negative
+I feel the pastry is overpriced here.,High Price,Negative
+I am okay with the pricing for this quality.,General Price Complaint,Positive
+The prices are rising too often and too sharply.,Price Increase,Negative
+Why is the paneer roll so expensive today?,High Price,Negative
+The sandwich price has increased but the portion has not.,Price Increase,Negative
+I did not get a fair quantity for this price.,Quantity-Price Concern,Negative
+This meal offers reasonable value for its price.,General Price Complaint,Positive
+Everything is getting more expensive without reason.,Price Increase,Negative
+The price of the pastry is too high in this caf?.,High Price,Negative
+The menu says 25 but the invoice says 35.,Price Mismatch,Negative
+This item costs more than it should here.,General Price Complaint,Negative
+I think the pricing is unreasonable here.,High Price,Negative
+The meal is too costly for a simple caf?.,General Price Complaint,Negative
+There is very little in the box for this price.,Quantity-Price Concern,Negative
+The parcel size is small for the price charged.,Quantity-Price Concern,Negative
+The vada pav costs too much and feels inflated.,High Price,Negative
+The quantity is not worth the price of the item.,Quantity-Price Concern,Negative
+The quantity is low and the value is poor.,Quantity-Price Concern,Negative
+This tea is definitely overpriced.,High Price,Negative
+The bun is way too expensive for a simple snack.,High Price,Negative
+The rate on the receipt was more than the list price.,Price Mismatch,Negative
+The menu indicates 130 but the bill says 160.,Price Mismatch,Negative
+The item is expensive and not worth the cost.,High Price,Negative
+I got very little for a high price.,Quantity-Price Concern,Negative
+The item was not expensive before; now the cost is high.,Price Increase,Negative
+The higher rates make this product less affordable.,Price Increase,Negative
+I paid too much for too little food.,Quantity-Price Concern,Negative
+The same product is now charged at a higher rate.,Price Increase,Negative
+The caf? charges too much for a regular coffee.,High Price,Negative
+The billed amount does not reflect the advertised price.,Price Mismatch,Negative
+I paid a lot but received very little food.,Quantity-Price Concern,Negative
+The price on the receipt is higher than the menu board.,Price Mismatch,Negative
+The fries cost too much for the quantity provided.,High Price,Negative
+The snack was overpriced for the small quantity.,Quantity-Price Concern,Negative
+The portion feels extremely small compared to the price.,Quantity-Price Concern,Negative
+The item feels overpriced given the portion size.,General Price Complaint,Negative
+This burger is much more expensive than expected.,High Price,Negative
+This sandwich is way too expensive for what it is.,High Price,Negative
+The salad is overvalued for a basic dish.,High Price,Negative
+The price of this snack is higher than any nearby shop.,High Price,Negative
+The cost of the meal is sensible for the quality.,General Price Complaint,Positive
+The salad is a bit pricey but still okay.,General Price Complaint,Positive
+The coffee is overpriced for such a small cup.,High Price,Negative
+The printed price and actual amount differ significantly.,Price Mismatch,Negative
+The increase in price is not justified.,Price Increase,Negative
+The food is over-priced compared to its quality.,General Price Complaint,Negative
+The cost is acceptable for the restaurant standards.,General Price Complaint,Positive
+The juice is costly for a small glass.,High Price,Negative
+"The panel says 35, but I paid 49.",Price Mismatch,Negative
+I paid more because the price list and billing differed.,Price Mismatch,Negative
+The franchise is increasing prices too often.,Price Increase,Negative
+The amount of food served is not satisfactory for the price.,Quantity-Price Concern,Negative
+I was overbilled compared to the posted price.,Price Mismatch,Negative
+The food prices are higher than nearby alternatives.,General Price Complaint,Negative
+The price of the snack is okay for the portion.,General Price Complaint,Positive
+The meal looked tiny for the price we paid.,Quantity-Price Concern,Negative
+The cost of the burger is excessive.,High Price,Negative
+The packet price has risen more than expected.,Price Increase,Negative
+I think the item is underfilled and overpriced.,Quantity-Price Concern,Negative
+The increase is not justified by any improvement in service.,Price Increase,Negative
+This portion is smaller than expected at this rate.,Quantity-Price Concern,Negative
+This item is priced well above what it should be.,High Price,Negative
+I think this menu item is expensive for what it is.,General Price Complaint,Negative
+The amount charged does not match the listed price.,Price Mismatch,Negative
+The food amount is insufficient for the bill amount.,Quantity-Price Concern,Negative
+This item is not too expensive compared to market rates.,General Price Complaint,Positive
+The poha is not reasonably priced.,High Price,Negative
+The food pricing appears out of line.,General Price Complaint,Negative
+The item feels overpriced and not customer-friendly.,High Price,Negative
+This mismatch made me feel overcharged.,Price Mismatch,Negative
+The samosa is priced above market value.,High Price,Negative
+I cannot believe the refund is not pleasing due to overpricing.,High Price,Negative
+The portion size is too small for the cost charged.,Quantity-Price Concern,Negative
+This item is now pricier than before and not worth it.,Price Increase,Negative
+The pakora price is unreasonable for the portion.,High Price,Negative
+The bhakri is priced higher than it should be.,High Price,Negative
+I paid more than the price listed on the menu.,Price Mismatch,Negative
+The displayed amount was 70 but I paid 85.,Price Mismatch,Negative
+The item is more expensive than I expected.,General Price Complaint,Negative
+The dosa is expensive and not worth the price.,High Price,Negative
+The cost of the samosa increased considerably.,Price Increase,Negative
+The menu price and the billed amount do not match.,Price Mismatch,Negative
+I was charged a premium price but got a small portion.,Quantity-Price Concern,Negative
+The value is not good enough for this price.,General Price Complaint,Negative
+The tea price is rising constantly and it is frustrating.,Price Increase,Negative
+The food seems costly for ordinary quality.,General Price Complaint,Negative
+The coffee price is very steep for a small serving.,High Price,Negative
+The amount served is disappointing for the bill.,Quantity-Price Concern,Negative
+I was charged 90 though the price list showed 75.,Price Mismatch,Negative
+The tea has gone up by a huge amount recently.,Price Increase,Negative
+The toast costs more than it should.,High Price,Negative
+The quantity is insufficient for the amount being charged.,Quantity-Price Concern,Negative
+The food portion is not fair for the money.,Quantity-Price Concern,Negative
+I paid extra but did not get enough food.,Quantity-Price Concern,Negative
+"The menu mentioned 45, yet I was charged 60.",Price Mismatch,Negative
+The price increase on this item is too much.,Price Increase,Negative
+This pizza slice is overcharged.,High Price,Negative
+The menu price is 50 but the receipt says 68.,Price Mismatch,Negative
+I do not think this product is worth that price.,High Price,Negative
+The quantity is poor and not proportionate to the amount.,Quantity-Price Concern,Negative
+The counter price was different from the bill amount.,Price Mismatch,Negative
+The item is over-priced compared to the market.,High Price,Negative
+I got a half portion for a high price.,Quantity-Price Concern,Negative
+The cost increase is hard to accept for a simple meal.,Price Increase,Negative
+The price of the samosa is too high for the portion served.,High Price,Negative
+I think the tea is priced appropriately.,General Price Complaint,Positive
+I cannot accept the recent hike in pricing.,Price Increase,Negative
+The price seems inflated for a basic product.,General Price Complaint,Negative
+"The receipt says 200, but the price tag was 170.",Price Mismatch,Negative
+The same snack costs more every time I visit.,Price Increase,Negative
+The change in price is unexpected and disappointing.,Price Increase,Negative
+The item feels like a very small quantity for the price.,Quantity-Price Concern,Negative
+The offer seems unfair because the portion is too small.,Quantity-Price Concern,Negative
+The snack costs more than it should.,High Price,Negative
+The serving size is very limited for the expense.,Quantity-Price Concern,Negative
+The panel shows increased pricing for familiar items.,Price Increase,Negative
+The price is not justified for this meal.,General Price Complaint,Negative
+The noodles cost too much for the size of the serving.,High Price,Negative
+The amount served is not enough for what we paid.,Quantity-Price Concern,Negative
+I am upset that the price went up so suddenly.,Price Increase,Negative
+The burger costs more than it should and feels overpriced.,High Price,Negative
+The item became significantly more expensive overnight.,Price Increase,Negative
+"The receipt says 200, but the price tag was 170.",Price Mismatch,Negative
+I was shocked by the high price of the sandwich.,High Price,Negative
+The snack price has jumped significantly in recent days.,Price Increase,Negative
+This is a fair price for a fresh and tasty item.,General Price Complaint,Positive
+The sandwich price has increased and it affects affordability.,Price Increase,Negative
+The actual bill does not agree with the menu price.,Price Mismatch,Negative
+The coffee is a fair price for a good cup.,General Price Complaint,Positive
+The price of this food is normal and fair.,General Price Complaint,Positive
+The serving size is tiny and not fair for this cost.,Quantity-Price Concern,Negative
+The price has increased by a lot compared to last time.,Price Increase,Negative
+I think this menu item is expensive for what it is.,General Price Complaint,Negative
+I noticed the burger price increased recently.,Price Increase,Negative
+The sandwich costs a little more but still feels justified.,General Price Complaint,Positive
+The quantity is very limited considering the cost.,Quantity-Price Concern,Negative
+The dosa feels overpriced and disappointing.,High Price,Negative
+This item has become dearer without added value.,Price Increase,Negative
+This item has become more expensive without any improvement.,Price Increase,Negative
+The price feels high even though the taste is average.,General Price Complaint,Negative
+The coffee is worth the price paid.,General Price Complaint,Positive
+I think the cost is more than expected here.,General Price Complaint,Negative
+Prices are increasing but the service has not improved.,Price Increase,Negative
+The tag says 20 but I was charged 30.,Price Mismatch,Negative
+Food prices are not justified in this shop.,General Price Complaint,Negative
+The price of the burger increased from last week.,Price Increase,Negative
+The samosa is priced reasonably for the portion size.,General Price Complaint,Positive
+Very little product for the price they ask.,Quantity-Price Concern,Negative
+The price of coffee has increased again this week.,Price Increase,Negative
+"I expected to pay 80, but I was charged 95.",Price Mismatch,Negative
+The receipt price is incorrect compared to the menu.,Price Mismatch,Negative
+This item costs more than it should here.,General Price Complaint,Negative
+The combo meal is reasonably priced.,General Price Complaint,Positive
+"The bill shows 120, while the menu price is 95.",Price Mismatch,Negative
+The coffee now costs more than before for the same cup.,Price Increase,Negative
+The package is tiny but still charged at a premium.,Quantity-Price Concern,Negative
+It feels like the price went up while quality stayed the same.,Price Increase,Negative
+The increase in snack prices is becoming unfair.,Price Increase,Negative
+It seems the shop has raised the price again.,Price Increase,Negative
+The final amount did not match what was displayed earlier.,Price Mismatch,Negative
+The burger charges are too high for a basic item.,High Price,Negative
+I was charged a higher amount than what was shown earlier.,Price Mismatch,Negative
+The product is too small relative to what I paid.,Quantity-Price Concern,Negative
+The cost does not match the actual quantity served.,Quantity-Price Concern,Negative
+The meal is too costly for a simple caf?.,General Price Complaint,Negative
+The bill got higher than the price board at the counter.,Price Mismatch,Negative
+The expense for the sandwich is unnecessarily high.,High Price,Negative
+The quantity is not enough for the price charged.,Quantity-Price Concern,Negative
+This menu item is a little expensive overall.,General Price Complaint,Negative
+"I paid 40 for the sandwich, but the menu says 30.",Price Mismatch,Negative
+The quantity and price feel balanced here.,General Price Complaint,Positive
+The item used to be affordable but is now too expensive.,Price Increase,Negative
+The tea is reasonably priced for a caf?.,General Price Complaint,Positive
+The price is not consistent with the quality.,General Price Complaint,Negative
+The recent increase in pricing feels excessive.,Price Increase,Negative
+I expected to pay 80 but was charged 100.,Price Mismatch,Negative
+The khichdi is expensive for a simple meal.,High Price,Negative
+The advertised amount and transaction amount do not agree.,Price Mismatch,Negative
+I was charged 120 despite seeing 100 on the menu.,Price Mismatch,Negative
+The portion size is not worth the money.,Quantity-Price Concern,Negative
+The quantity is too little to justify the price.,Quantity-Price Concern,Negative
+I was charged extra because the final bill exceeded the listed price.,Price Mismatch,Negative
+The bag had very little content for this cost.,Quantity-Price Concern,Negative
+The chai becomes more expensive every month.,Price Increase,Negative
+The price is not consistent with the quality.,General Price Complaint,Negative
+The pricing seems a bit high for a regular meal.,General Price Complaint,Negative
+The sandwich is over-pricing customers.,High Price,Negative
+The cost is too high for simple ingredients.,General Price Complaint,Negative
+I found the menu pricing a bit unreasonable.,General Price Complaint,Negative
+The snack is tiny for the money charged.,Quantity-Price Concern,Negative
+I was charged more than the menu stated.,Price Mismatch,Negative
+The menu is charging a premium without premium quality.,High Price,Negative
+The soup price is too much for the quantity.,High Price,Negative
+I paid 55 for a snack that was advertised at 40.,Price Mismatch,Negative
+The menu prices are normal and customer-friendly.,General Price Complaint,Positive
+The item is too small relative to the price tag.,Quantity-Price Concern,Negative
+This meal is too little for the amount we paid.,Quantity-Price Concern,Negative
+The price hike is causing discomfort for regular customers.,Price Increase,Negative
+The pizza is too expensive for the taste and size.,High Price,Negative
+This is not enough quantity for this rate.,Quantity-Price Concern,Negative
+The meal is too expensive for the serving.,High Price,Negative
+The sandwich is getting more expensive every visit.,Price Increase,Negative
+The price has increased without any explanation.,Price Increase,Negative
+The price of the sandwich is too high to justify.,High Price,Negative
+The final bill was higher than the menu price.,Price Mismatch,Negative
+The burger is not overpriced and tastes good.,General Price Complaint,Positive
+The quantity is not enough to justify the cost.,Quantity-Price Concern,Negative
+We received very little food for the amount we paid.,Quantity-Price Concern,Negative
+The curry price is unreasonable for the portion.,High Price,Negative
+The item was undersized for the price we paid.,Quantity-Price Concern,Negative
+This meal is not affordable at the current rate.,General Price Complaint,Negative
+I feel the price is a bit much for this item.,General Price Complaint,Negative
+The size of the item is disappointing relative to the price.,Quantity-Price Concern,Negative
+I was asked to pay 75 when the menu displayed 60.,Price Mismatch,Negative
+The item was priced 35 on the board but cost 50 at billing.,Price Mismatch,Negative
+The item feels slightly costly for the satisfaction.,General Price Complaint,Negative
+The amount served is too small for the amount charged.,Quantity-Price Concern,Negative
+The portion and price do not feel balanced.,General Price Complaint,Negative
+The sticker said 90 but the bill is 115.,Price Mismatch,Negative
+I think the chai is priced too high compared to other shops.,High Price,Negative
+"The menu mentioned 45, yet I was charged 60.",Price Mismatch,Negative
+The burger price is fair for the quality and quantity.,General Price Complaint,Positive
+The price of the sandwich is higher than it was last week.,Price Increase,Negative
+I paid 50 instead of the listed 42 for the item.,Price Mismatch,Negative
+The quantity is unequal to the cost charged.,Quantity-Price Concern,Negative
+The food is expensive for the value provided.,General Price Complaint,Negative
+The food is priced above what I would consider fair.,General Price Complaint,Negative
+The checkout charged 110 whereas it should have been 96.,Price Mismatch,Negative
+The menu item is more expensive now than before.,Price Increase,Negative
+The noodles are way too pricey for a basic meal.,High Price,Negative
+The pastry is fairly priced for what you get.,General Price Complaint,Positive
+The meal is much more expensive than it used to be.,Price Increase,Negative
+The menu item is listed at 60 but the cashier charged 75.,Price Mismatch,Negative
+The cost on the receipt exceeds the advertised menu price.,Price Mismatch,Negative
+The combo meal is priced too high.,High Price,Negative
+The pulao is overpriced compared to local pricing.,High Price,Negative
+The vada is charging too much for a regular snack.,High Price,Negative
+The price of tea has increased recently and is unreasonable.,Price Increase,Negative
+The dosa is slightly expensive but still acceptable.,General Price Complaint,Positive
+The price of the momos is much higher than expected.,High Price,Negative
+The item is costlier than before and quality is unchanged.,Price Increase,Negative
+The price is unfair for the overall quality.,General Price Complaint,Negative
+This meal feels too expensive and not fair.,High Price,Negative
+This sandwich is way too expensive for what it is.,High Price,Negative
+The product tag showed 20 but I was charged 28.,Price Mismatch,Negative
+The vendor charged 68 while the menu says 52.,Price Mismatch,Negative
+I was charged 70 instead of the listed 55.,Price Mismatch,Negative
+The tea is expensive and not justified by the taste.,High Price,Negative
+The rate is too high for the quality offered.,High Price,Negative
+The price feels high even though the taste is average.,General Price Complaint,Negative
