@@ -6,7 +6,7 @@
 import os
 import sys
 import pandas as pd
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_file
 
 # Set project root
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -17,7 +17,7 @@ from src.analyzer import PriceComplaintAnalyzer
 
 app = Flask(__name__)
 
-# Initialize analyzer
+# Initialize analyzer singleton
 analyzer = None
 
 
@@ -35,41 +35,54 @@ def index():
 
 @app.route("/api/analyze", methods=["POST"])
 def api_analyze():
+    """
+    Submits a student complaint for NLP analysis.
+    Stores the analyzed complaint to help canteen authorities track issues.
+    """
     data = request.get_json(silent=True) or {}
     text = data.get("complaint", "").strip()
+    store = data.get("store", True)  # Persist submissions by default
 
     if not text:
         return jsonify({"error": "Complaint text cannot be empty."}), 400
 
     try:
         active_analyzer = get_analyzer()
-        result = active_analyzer.analyze(text)
+        result = active_analyzer.analyze(text, store=store)
         return jsonify({"status": "success", "data": result})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
 
-@app.route("/api/stats", methods=["GET"])
-def api_stats():
-    csv_path = os.path.join(PROJECT_ROOT, "dataset", "processed_complaints.csv")
+@app.route("/api/canteen-summary", methods=["GET"])
+def api_canteen_summary():
+    """
+    Returns aggregated analytics for college canteen authorities:
+    - Top food items receiving complaints
+    - Frequently reported pricing issues (category distribution)
+    - Sentiment distribution (Positive, Neutral, Negative)
+    - Recent submissions log
+    """
+    try:
+        active_analyzer = get_analyzer()
+        summary = active_analyzer.get_canteen_summary()
+        return jsonify({"status": "success", "data": summary})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/export", methods=["GET"])
+def api_export():
+    """Exports all stored student complaints as a CSV file for administration."""
+    csv_path = os.path.join(PROJECT_ROOT, "dataset", "submitted_complaints.csv")
     if not os.path.exists(csv_path):
-        return jsonify({"error": "Dataset not found"}), 404
-
-    df = pd.read_csv(csv_path)
-
-    total_records = len(df)
-    category_counts = df["category"].value_counts().to_dict()
-    sentiment_counts = df["sentiment"].value_counts().to_dict() if "sentiment" in df.columns else {}
-
-    # Sample complaints for demonstration
-    samples = df.sample(min(8, len(df)), random_state=42)[["complaint", "category", "sentiment"]].to_dict(orient="records")
-
-    return jsonify({
-        "total_records": total_records,
-        "categories": category_counts,
-        "sentiments": sentiment_counts,
-        "samples": samples
-    })
+        return jsonify({"error": "No complaints recorded yet."}), 404
+    return send_file(
+        csv_path,
+        mimetype="text/csv",
+        as_attachment=True,
+        download_name="canteen_student_complaints_report.csv"
+    )
 
 
 if __name__ == "__main__":

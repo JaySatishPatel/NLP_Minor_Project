@@ -116,7 +116,7 @@ Examples:
 
     parser.add_argument(
         "--mode",
-        choices=["analyze", "interactive", "train", "batch", "web"],
+        choices=["analyze", "interactive", "train", "batch", "web", "summary"],
         default="interactive",
         help="Execution mode (default: interactive)"
     )
@@ -165,11 +165,28 @@ Examples:
     # For inference modes, initialize analyzer
     analyzer = PriceComplaintAnalyzer()
 
-    if args.mode == "analyze":
+    if args.mode == "summary":
+        summary = analyzer.get_canteen_summary()
+        print("\n" + "=" * 75)
+        print("CANTEEN ADMINISTRATION COMPLAINT INTELLIGENCE SUMMARY")
+        print("=" * 75)
+        print(f"Total Feedback Recorded: {summary['total_complaints']}")
+        print("\nTop Food Items Receiving Complaints:")
+        for item, count in list(summary['food_items_leaderboard'].items())[:7]:
+            print(f"  - {item:20s}: {count} complaints")
+        print("\nFrequently Reported Pricing Issues:")
+        for cat, count in summary['category_counts'].items():
+            print(f"  - {cat:25s}: {count} ({count/summary['total_complaints']:.1%})")
+        print("\nSentiment Distribution:")
+        for sent, count in summary['sentiment_counts'].items():
+            print(f"  - {sent:10s}: {count}")
+        print("=" * 75)
+
+    elif args.mode == "analyze":
         if not args.text:
             print("[Error] Please specify text using --text \"your complaint\"")
             sys.exit(1)
-        res = analyzer.analyze(args.text)
+        res = analyzer.analyze(args.text, store=True)
         analyzer.print_analysis(res)
 
     elif args.mode == "batch":

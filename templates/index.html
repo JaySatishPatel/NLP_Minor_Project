@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Price Complaint Analyzer | NLP Intelligence System</title>
+    <title>College Canteen Price Complaint Analyzer | NLP System</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -16,205 +16,269 @@
             <div class="header-brand">
                 <div class="logo-badge">NLP</div>
                 <div>
-                    <h1 class="header-title">Price Complaint Analyzer</h1>
-                    <p class="header-subtitle">Dual NLP Sentiment & Category Intelligence Pipeline</p>
+                    <h1 class="header-title">College Canteen Price Complaint Analyzer</h1>
+                    <p class="header-subtitle">NLP Sentiment, Food Item Extraction & Pricing Category Intelligence</p>
                 </div>
             </div>
-            <div class="header-status">
-                <span class="status-indicator"></span>
-                <span>Models Online (v2.0)</span>
+            
+            <!-- Navigation Tabs -->
+            <div class="nav-tabs">
+                <button type="button" class="nav-tab active" id="tabStudentBtn" onclick="switchTab('student')">
+                    📝 Student Portal
+                </button>
+                <button type="button" class="nav-tab" id="tabAdminBtn" onclick="switchTab('admin')">
+                    📊 Canteen Authority Dashboard
+                </button>
             </div>
         </header>
 
-        <!-- Main Layout -->
-        <main class="main-content">
-            <!-- Left Panel: Input & Quick Tests -->
-            <section class="panel input-panel">
-                <div class="card-header">
-                    <h2>Complaint Input</h2>
-                    <span class="badge badge-info">Real-Time Inference</span>
-                </div>
-                
-                <form id="analyzeForm" class="complaint-form">
-                    <label for="complaintText" class="form-label">Enter Campus Canteen Complaint or Feedback:</label>
-                    <textarea 
-                        id="complaintText" 
-                        class="form-textarea" 
-                        placeholder="e.g., The sandwich was 40 on the menu board but I was billed 60 rupees at the counter..."
-                        rows="4"
-                        required
-                    ></textarea>
+        <!-- ================= TAB 1: STUDENT SUBMISSION PORTAL ================= -->
+        <div id="studentTabContent">
+            <main class="main-content">
+                <!-- Left Panel: Submission Form & Quick Samples -->
+                <section class="panel input-panel">
+                    <div class="card-header">
+                        <h2>Submit Food Price Complaint</h2>
+                        <span class="badge badge-info">NLP Auto-Classification</span>
+                    </div>
                     
-                    <div class="form-footer">
-                        <span id="charCount" class="char-count">0 characters</span>
-                        <div class="button-group">
-                            <button type="button" id="clearBtn" class="btn btn-secondary">Clear</button>
-                            <button type="submit" id="analyzeBtn" class="btn btn-primary">
-                                <span class="btn-text">Analyze Complaint</span>
-                                <span class="spinner" style="display: none;"></span>
+                    <form id="analyzeForm" class="complaint-form">
+                        <label for="complaintText" class="form-label">Describe your canteen food pricing grievance or feedback:</label>
+                        <textarea 
+                            id="complaintText" 
+                            class="form-textarea" 
+                            placeholder="e.g., The samosa was listed as 20 rupees on the menu board but the cashier charged me 35 at the counter..."
+                            rows="4"
+                            required
+                        ></textarea>
+                        
+                        <div class="form-footer">
+                            <span id="charCount" class="char-count">0 characters</span>
+                            <div class="button-group">
+                                <button type="button" id="clearBtn" class="btn btn-secondary">Clear</button>
+                                <button type="submit" id="analyzeBtn" class="btn btn-primary">
+                                    <span class="btn-text">Submit & Analyze</span>
+                                    <span class="spinner" style="display: none;"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Quick Samples -->
+                    <div class="sample-section">
+                        <label class="sample-label">Or Click a Common Complaint Pattern to Test:</label>
+                        <div class="sample-pills">
+                            <button type="button" class="sample-pill" data-text="The samosa was 20 rupees on the menu board but the cashier billed 35.">
+                                💰 Price Mismatch (Samosa)
+                            </button>
+                            <button type="button" class="sample-pill" data-text="The dosa portion size is tiny and meager compared to its high cost.">
+                                🍱 Quantity vs Price (Dosa)
+                            </button>
+                            <button type="button" class="sample-pill" data-text="Tea price increased sharply from 10 to 15 rupees this week without notice.">
+                                📈 Price Increase (Tea)
+                            </button>
+                            <button type="button" class="sample-pill" data-text="The sandwich is way too expensive for college students.">
+                                🏷️ High Price (Sandwich)
+                            </button>
+                            <button type="button" class="sample-pill" data-text="The thali lunch is affordable, fresh, and great value for money!">
+                                🌟 Positive Feedback (Thali)
+                            </button>
+                            <button type="button" class="sample-pill" data-text="Can you please tell me the price of cold coffee?">
+                                ℹ️ Price Inquiry (Coffee)
+                            </button>
+                            <button type="button" class="sample-pill" data-text="The library wifi network is very slow today.">
+                                ⚠️ Non-Food Grievance (Out of Scope)
                             </button>
                         </div>
                     </div>
-                </form>
 
-                <!-- Quick Samples -->
-                <div class="sample-section">
-                    <label class="sample-label">Or Click a Sample Complaint to Test:</label>
-                    <div class="sample-pills">
-                        <button type="button" class="sample-pill" data-text="The samosa was listed as 20 rupees on the menu but the cashier billed me 30.">
-                            💰 Price Mismatch
-                        </button>
-                        <button type="button" class="sample-pill" data-text="The food portion size is tiny and meager compared to the high cost.">
-                            🍱 Quantity vs Price
-                        </button>
-                        <button type="button" class="sample-pill" data-text="Tea price increased sharply from 10 to 15 rupees this week without notice.">
-                            📈 Price Increase
-                        </button>
-                        <button type="button" class="sample-pill" data-text="The pizza slice is way too expensive for student budgets.">
-                            🏷️ High Price
-                        </button>
-                        <button type="button" class="sample-pill" data-text="The thali is affordable, fresh, and great value for money!">
-                            🌟 Positive Feedback
-                        </button>
+                    <!-- Tech Badge Footnote -->
+                    <div class="tech-stack-card">
+                        <h3>NLP Processing Pipeline</h3>
+                        <div class="tech-tags">
+                            <span class="tech-tag">Domain Relevance Filter</span>
+                            <span class="tech-tag">Food Item Extractor</span>
+                            <span class="tech-tag">Slang & Abbrev Normalizer</span>
+                            <span class="tech-tag">Positive / Neutral / Negative Sentiment</span>
+                            <span class="tech-tag">5-Class Pricing Classifier</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Right Panel: Real-Time Intelligence Report -->
+                <section class="panel results-panel">
+                    <div class="card-header">
+                        <h2>Automated Analysis & Categorization</h2>
+                        <span id="analysisStatus" class="badge badge-neutral">Awaiting Input</span>
+                    </div>
+
+                    <!-- Empty State -->
+                    <div id="emptyState" class="empty-state">
+                        <div class="empty-icon">🍽️</div>
+                        <h3>Submit a Complaint to View Analysis</h3>
+                        <p>Your complaint will be preprocessed, matched for canteen food items, classified into pricing categories, and assigned an administrative priority.</p>
+                    </div>
+
+                    <!-- Results Container -->
+                    <div id="resultsContainer" class="results-container" style="display: none;">
+                        <!-- Stored Notification Banner -->
+                        <div class="notification-banner">
+                            <span class="banner-icon">✓</span>
+                            <span>Complaint analyzed and recorded for Canteen Administration.</span>
+                        </div>
+
+                        <!-- Top Highlights Row -->
+                        <div class="results-grid">
+                            <!-- Food Item Card -->
+                            <div class="metric-card">
+                                <span class="metric-title">Identified Food Item</span>
+                                <div class="metric-value-row">
+                                    <span id="resFoodItem" class="metric-value text-accent">-</span>
+                                </div>
+                                <span id="resRelevanceBadge" class="relevance-badge">-</span>
+                            </div>
+
+                            <!-- Sentiment Card (Positive / Neutral / Negative) -->
+                            <div class="metric-card" id="sentimentCard">
+                                <span class="metric-title">Sentiment (3-Way)</span>
+                                <div class="metric-value-row">
+                                    <span id="resSentiment" class="metric-value">-</span>
+                                    <span id="resSentimentConf" class="confidence-pill">-</span>
+                                </div>
+                                <div class="progress-bar-bg">
+                                    <div id="sentimentProgress" class="progress-bar-fill"></div>
+                                </div>
+                            </div>
+
+                            <!-- Category Card -->
+                            <div class="metric-card" id="categoryCard">
+                                <span class="metric-title">Pricing Category</span>
+                                <div class="metric-value-row">
+                                    <span id="resCategory" class="metric-value">-</span>
+                                    <span id="resCategoryConf" class="confidence-pill">-</span>
+                                </div>
+                                <div class="progress-bar-bg">
+                                    <div id="categoryProgress" class="progress-bar-fill bg-accent"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Urgency Banner -->
+                        <div class="urgency-row">
+                            <span class="urgency-label">Administrative Urgency:</span>
+                            <span id="resUrgency" class="urgency-badge">-</span>
+                        </div>
+
+                        <!-- Category Probabilities Chart -->
+                        <div class="detail-section">
+                            <h4>Pricing Category Probabilities Distribution</h4>
+                            <div id="categoryBars" class="category-bars"></div>
+                        </div>
+
+                        <!-- Cleaned Text & Keywords -->
+                        <div class="detail-section">
+                            <h4>Normalized Preprocessed Text & Trigger Terms</h4>
+                            <div class="code-preview" id="resCleanedText"></div>
+                            <div class="keywords-row" id="resKeywords"></div>
+                        </div>
+
+                        <!-- Actionable Recommendation -->
+                        <div class="recommendation-card" id="resRecommendationCard">
+                            <div class="recommendation-header">
+                                <span class="rec-icon">💡</span>
+                                <strong>Recommended Canteen Administrative Action:</strong>
+                            </div>
+                            <p id="resRecommendationText" class="recommendation-body"></p>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- ================= TAB 2: CANTEEN AUTHORITY DASHBOARD ================= -->
+        <div id="adminTabContent" style="display: none;">
+            <section class="overview-section">
+                <div class="section-title-row">
+                    <div>
+                        <h2>Canteen Administration Intelligence Dashboard</h2>
+                        <p class="section-subtitle">Summary of student price complaints, most complained food items, and pricing grievances.</p>
+                    </div>
+                    <a href="/api/export" class="btn btn-secondary">
+                        📥 Download Full CSV Report
+                    </a>
+                </div>
+                
+                <!-- KPI Stats Row -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-num" id="adminTotal">--</span>
+                        <span class="stat-desc">Total Recorded Feedback</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-num color-accent" id="adminTopFood">--</span>
+                        <span class="stat-desc">Top Complained Food Item</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-num color-neg" id="adminCriticalCount">--</span>
+                        <span class="stat-desc">Critical Billing Alerts</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-num color-pos" id="adminPositiveCount">--</span>
+                        <span class="stat-desc">Positive Satisfaction Reviews</span>
                     </div>
                 </div>
 
-                <!-- Pipeline Architecture Info -->
-                <div class="tech-stack-card">
-                    <h3>Pipeline Architecture</h3>
-                    <div class="tech-tags">
-                        <span class="tech-tag">TF-IDF Vectorization</span>
-                        <span class="tech-tag">Sublinear TF</span>
-                        <span class="tech-tag">Class Balancing</span>
-                        <span class="tech-tag">Multi-Class Logistic Regression</span>
-                        <span class="tech-tag">Slang Normalizer</span>
+                <!-- Two-Column Analytics Row -->
+                <div class="analytics-grid">
+                    <!-- Food Items Leaderboard -->
+                    <div class="analytics-panel">
+                        <h3>🍱 Food Items Receiving Most Complaints</h3>
+                        <p class="panel-hint">Helps authorities identify which menu items require pricing or portion revisions.</p>
+                        <div id="foodLeaderboard" class="leaderboard-list">
+                            <div class="loading-state">Loading food analytics...</div>
+                        </div>
+                    </div>
+
+                    <!-- Frequently Reported Pricing Issues -->
+                    <div class="analytics-panel">
+                        <h3>🏷️ Frequently Reported Pricing Issues</h3>
+                        <p class="panel-hint">Breakdown across the 5 standard pricing complaint categories.</p>
+                        <div id="issuesBreakdown" class="issues-list">
+                            <div class="loading-state">Loading category analytics...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Submissions Table -->
+                <div class="table-section">
+                    <div class="card-header">
+                        <h3>Recent Student Complaint Submissions</h3>
+                        <span class="badge badge-info">Live Database Log</span>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>Complaint Text</th>
+                                    <th>Food Item</th>
+                                    <th>Category</th>
+                                    <th>Sentiment</th>
+                                    <th>Urgency</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentTableBody">
+                                <tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Loading recent complaints...</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </section>
-
-            <!-- Right Panel: Results & Probability Breakdown -->
-            <section class="panel results-panel">
-                <div class="card-header">
-                    <h2>Intelligence Report</h2>
-                    <span id="analysisTimestamp" class="badge badge-neutral">Awaiting Input</span>
-                </div>
-
-                <!-- Empty State -->
-                <div id="emptyState" class="empty-state">
-                    <div class="empty-icon">📊</div>
-                    <h3>No Analysis Yet</h3>
-                    <p>Enter a complaint on the left or select a sample query to view the dual classification breakdown.</p>
-                </div>
-
-                <!-- Results Container -->
-                <div id="resultsContainer" class="results-container" style="display: none;">
-                    <!-- Key Cards Row -->
-                    <div class="results-grid">
-                        <!-- Sentiment Card -->
-                        <div class="metric-card" id="sentimentCard">
-                            <span class="metric-title">Detected Sentiment</span>
-                            <div class="metric-value-row">
-                                <span id="resSentiment" class="metric-value">-</span>
-                                <span id="resSentimentConf" class="confidence-pill">-</span>
-                            </div>
-                            <div class="progress-bar-bg">
-                                <div id="sentimentProgress" class="progress-bar-fill"></div>
-                            </div>
-                        </div>
-
-                        <!-- Category Card -->
-                        <div class="metric-card" id="categoryCard">
-                            <span class="metric-title">Price Category</span>
-                            <div class="metric-value-row">
-                                <span id="resCategory" class="metric-value">-</span>
-                                <span id="resCategoryConf" class="confidence-pill">-</span>
-                            </div>
-                            <div class="progress-bar-bg">
-                                <div id="categoryProgress" class="progress-bar-fill"></div>
-                            </div>
-                        </div>
-
-                        <!-- Priority / Urgency Card -->
-                        <div class="metric-card" id="urgencyCard">
-                            <span class="metric-title">Urgency Priority</span>
-                            <div class="metric-value-row">
-                                <span id="resUrgency" class="metric-value">-</span>
-                            </div>
-                            <p class="metric-hint">Based on billing risk and customer sentiment.</p>
-                        </div>
-                    </div>
-
-                    <!-- Category Probabilities Chart -->
-                    <div class="detail-section">
-                        <h4>Category Probabilities Distribution</h4>
-                        <div id="categoryBars" class="category-bars"></div>
-                    </div>
-
-                    <!-- Cleaned Text & Keywords -->
-                    <div class="detail-section">
-                        <h4>Preprocessed NLP Representation</h4>
-                        <div class="code-preview" id="resCleanedText"></div>
-                        <div class="keywords-row" id="resKeywords"></div>
-                    </div>
-
-                    <!-- Actionable Recommendation -->
-                    <div class="recommendation-card" id="resRecommendationCard">
-                        <div class="recommendation-header">
-                            <span class="rec-icon">💡</span>
-                            <strong>Administrative Action Recommendation:</strong>
-                        </div>
-                        <p id="resRecommendationText" class="recommendation-body"></p>
-                    </div>
-                </div>
-            </section>
-        </main>
-
-        <!-- Bottom Section: Dataset Analytics Overview -->
-        <section class="overview-section">
-            <div class="section-title-row">
-                <h2>Canteen Training Dataset Analytics</h2>
-                <span class="badge badge-info">340 Preprocessed Training Samples</span>
-            </div>
-            
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <span class="stat-num" id="statTotal">340</span>
-                    <span class="stat-desc">Cleaned Records</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-num" id="statCategories">5</span>
-                    <span class="stat-desc">Pricing Categories</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-num" id="statAccuracySentiment">92.7%</span>
-                    <span class="stat-desc">Sentiment Accuracy</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-num" id="statAccuracyCategory">79.4%</span>
-                    <span class="stat-desc">Category Accuracy</span>
-                </div>
-            </div>
-
-            <!-- Recent Dataset Samples Table -->
-            <div class="table-container">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Complaint Text</th>
-                            <th>Class Category</th>
-                            <th>Sentiment</th>
-                        </tr>
-                    </thead>
-                    <tbody id="samplesTableBody">
-                        <tr><td colspan="3" style="text-align: center; color: var(--text-muted);">Loading dataset records...</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
+        </div>
 
         <!-- Footer -->
         <footer class="footer">
-            <p>NLP Minor Project &bull; Campus Canteen Price Complaint Analyzer &bull; Python, Scikit-Learn &amp; Flask</p>
+            <p>College Canteen Price Complaint Analyzer &bull; NLP Minor Project &bull; Python, Scikit-Learn &amp; Flask</p>
         </footer>
     </div>
 
@@ -228,6 +292,26 @@
         const resultsContainer = document.getElementById('resultsContainer');
         const samplePills = document.querySelectorAll('.sample-pill');
 
+        function switchTab(tab) {
+            const studentContent = document.getElementById('studentTabContent');
+            const adminContent = document.getElementById('adminTabContent');
+            const studentBtn = document.getElementById('tabStudentBtn');
+            const adminBtn = document.getElementById('tabAdminBtn');
+
+            if (tab === 'student') {
+                studentContent.style.display = 'block';
+                adminContent.style.display = 'none';
+                studentBtn.classList.add('active');
+                adminBtn.classList.remove('active');
+            } else {
+                studentContent.style.display = 'none';
+                adminContent.style.display = 'block';
+                studentBtn.classList.remove('active');
+                adminBtn.classList.add('active');
+                loadAdminSummary();
+            }
+        }
+
         textarea.addEventListener('input', () => {
             charCount.textContent = `${textarea.value.length} characters`;
         });
@@ -237,6 +321,7 @@
             charCount.textContent = '0 characters';
             emptyState.style.display = 'block';
             resultsContainer.style.display = 'none';
+            document.getElementById('analysisStatus').textContent = 'Awaiting Input';
         });
 
         samplePills.forEach(pill => {
@@ -254,13 +339,13 @@
 
             analyzeBtn.disabled = true;
             document.querySelector('.spinner').style.display = 'inline-block';
-            document.querySelector('.btn-text').textContent = 'Analyzing...';
+            document.querySelector('.btn-text').textContent = 'Processing...';
 
             try {
                 const response = await fetch('/api/analyze', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ complaint: text })
+                    body: JSON.stringify({ complaint: text, store: true })
                 });
 
                 const data = await response.json();
@@ -274,44 +359,69 @@
             } finally {
                 analyzeBtn.disabled = false;
                 document.querySelector('.spinner').style.display = 'none';
-                document.querySelector('.btn-text').textContent = 'Analyze Complaint';
+                document.querySelector('.btn-text').textContent = 'Submit & Analyze';
             }
         });
 
         function renderResults(res) {
             emptyState.style.display = 'none';
             resultsContainer.style.display = 'block';
+            document.getElementById('analysisStatus').textContent = 'Analysis Completed';
 
-            document.getElementById('analysisTimestamp').textContent = 'Just Now';
+            // Food item & relevance
+            document.getElementById('resFoodItem').textContent = res.food_item;
+            const relBadge = document.getElementById('resRelevanceBadge');
+            if (res.is_food_pricing_related) {
+                relBadge.textContent = '✓ Food Pricing Domain Confirmed';
+                relBadge.className = 'relevance-badge rel-yes';
+            } else {
+                relBadge.textContent = '⚠️ Non-Food / Out-of-Scope Grievance';
+                relBadge.className = 'relevance-badge rel-no';
+            }
 
-            // Sentiment
+            // Sentiment (Positive / Neutral / Negative)
             const sEl = document.getElementById('resSentiment');
             sEl.textContent = res.sentiment;
-            sEl.className = 'metric-value ' + (res.sentiment === 'Positive' ? 'color-pos' : 'color-neg');
+            if (res.sentiment === 'Positive') {
+                sEl.className = 'metric-value color-pos';
+            } else if (res.sentiment === 'Neutral') {
+                sEl.className = 'metric-value color-neutral';
+            } else {
+                sEl.className = 'metric-value color-neg';
+            }
 
             const sConf = document.getElementById('resSentimentConf');
             sConf.textContent = (res.sentiment_confidence * 100).toFixed(1) + '%';
-            document.getElementById('sentimentProgress').style.width = (res.sentiment_confidence * 100) + '%';
-            document.getElementById('sentimentProgress').className = 'progress-bar-fill ' + (res.sentiment === 'Positive' ? 'bg-pos' : 'bg-neg');
+
+            const sBar = document.getElementById('sentimentProgress');
+            sBar.style.width = (res.sentiment_confidence * 100) + '%';
+            if (res.sentiment === 'Positive') {
+                sBar.className = 'progress-bar-fill bg-pos';
+            } else if (res.sentiment === 'Neutral') {
+                sBar.className = 'progress-bar-fill bg-neutral';
+            } else {
+                sBar.className = 'progress-bar-fill bg-neg';
+            }
 
             // Category
             document.getElementById('resCategory').textContent = res.category;
             const cConf = document.getElementById('resCategoryConf');
             cConf.textContent = (res.category_confidence * 100).toFixed(1) + '%';
             document.getElementById('categoryProgress').style.width = (res.category_confidence * 100) + '%';
-            document.getElementById('categoryProgress').className = 'progress-bar-fill bg-accent';
 
             // Urgency
             const uEl = document.getElementById('resUrgency');
             uEl.textContent = res.urgency;
             if (res.urgency.includes('CRITICAL')) {
-                uEl.style.color = '#ef4444';
+                uEl.className = 'urgency-badge urg-critical';
             } else if (res.urgency.includes('HIGH')) {
-                uEl.style.color = '#f97316';
+                uEl.className = 'urgency-badge urg-high';
             } else if (res.urgency.includes('LOW')) {
-                uEl.style.color = '#22c55e';
+                uEl.className = 'urgency-badge urg-low';
+            } else if (res.urgency.includes('OUT OF SCOPE')) {
+                uEl.className = 'urgency-badge urg-scope';
             } else {
-                uEl.style.color = '#f59e0b';
+                uEl.className = 'urgency-badge urg-medium';
             }
 
             // Probability Bars
@@ -346,38 +456,101 @@
                     kwEl.appendChild(tag);
                 });
             } else {
-                kwEl.innerHTML = '<span class="text-muted">No specific price numbers or triggers identified.</span>';
+                kwEl.innerHTML = '<span class="text-muted">No specific price numbers or keywords identified.</span>';
             }
 
             // Recommendation
             document.getElementById('resRecommendationText').textContent = res.recommendation;
         }
 
-        // Fetch dataset statistics on page load
-        async function loadStats() {
+        // Fetch Canteen Authority Summary
+        async function loadAdminSummary() {
             try {
-                const res = await fetch('/api/stats');
-                const data = await res.json();
-                if (data.total_records) {
-                    document.getElementById('statTotal').textContent = data.total_records;
-                    const tbody = document.getElementById('samplesTableBody');
-                    tbody.innerHTML = '';
-                    data.samples.forEach(s => {
-                        const tr = document.createElement('tr');
-                        const sClass = s.sentiment === 'Positive' ? 'tag-pos' : 'tag-neg';
-                        tr.innerHTML = `
-                            <td>${s.complaint}</td>
-                            <td><span class="badge badge-cat">${s.category}</span></td>
-                            <td><span class="badge ${sClass}">${s.sentiment}</span></td>
-                        `;
-                        tbody.appendChild(tr);
-                    });
+                const res = await fetch('/api/canteen-summary');
+                const json = await res.json();
+                if (json.status !== 'success') return;
+                const data = json.data;
+
+                // KPIs
+                document.getElementById('adminTotal').textContent = data.total_complaints;
+                
+                // Top Food Item
+                const foodEntries = Object.entries(data.food_items_leaderboard);
+                if (foodEntries.length > 0) {
+                    document.getElementById('adminTopFood').textContent = foodEntries[0][0];
                 }
-            } catch (e) {
-                console.error('Stats error:', e);
+
+                // Critical Count
+                let critCount = 0;
+                for (const [urg, count] of Object.entries(data.urgency_counts)) {
+                    if (urg.includes('CRITICAL')) critCount += count;
+                }
+                document.getElementById('adminCriticalCount').textContent = critCount;
+
+                // Positive count
+                document.getElementById('adminPositiveCount').textContent = data.sentiment_counts['Positive'] || 0;
+
+                // Food Items Leaderboard list
+                const foodList = document.getElementById('foodLeaderboard');
+                foodList.innerHTML = '';
+                const maxFoodCount = foodEntries.length > 0 ? foodEntries[0][1] : 1;
+                foodEntries.slice(0, 7).forEach(([item, count]) => {
+                    const pct = Math.round((count / maxFoodCount) * 100);
+                    const row = document.createElement('div');
+                    row.className = 'leaderboard-row';
+                    row.innerHTML = `
+                        <div class="leaderboard-labels">
+                            <span class="leaderboard-name">${item}</span>
+                            <span class="leaderboard-count">${count} complaints</span>
+                        </div>
+                        <div class="progress-bar-bg small">
+                            <div class="progress-bar-fill bg-accent" style="width: ${pct}%;"></div>
+                        </div>
+                    `;
+                    foodList.appendChild(row);
+                });
+
+                // Issues Breakdown list
+                const issuesList = document.getElementById('issuesBreakdown');
+                issuesList.innerHTML = '';
+                const totalIssues = data.total_complaints || 1;
+                for (const [cat, count] of Object.entries(data.category_counts)) {
+                    const pct = ((count / totalIssues) * 100).toFixed(1);
+                    const row = document.createElement('div');
+                    row.className = 'leaderboard-row';
+                    row.innerHTML = `
+                        <div class="leaderboard-labels">
+                            <span class="leaderboard-name">${cat}</span>
+                            <span class="leaderboard-count">${count} (${pct}%)</span>
+                        </div>
+                        <div class="progress-bar-bg small">
+                            <div class="progress-bar-fill bg-warning" style="width: ${pct}%;"></div>
+                        </div>
+                    `;
+                    issuesList.appendChild(row);
+                }
+
+                // Recent table
+                const tbody = document.getElementById('recentTableBody');
+                tbody.innerHTML = '';
+                data.recent_submissions.forEach(s => {
+                    const tr = document.createElement('tr');
+                    const sClass = s.sentiment === 'Positive' ? 'tag-pos' : (s.sentiment === 'Neutral' ? 'tag-neutral' : 'tag-neg');
+                    tr.innerHTML = `
+                        <td style="white-space: nowrap; font-size: 0.78rem; color: var(--text-muted);">${s.timestamp || '-'}</td>
+                        <td>${s.complaint}</td>
+                        <td><span class="badge badge-food">${s.food_item || 'General'}</span></td>
+                        <td><span class="badge badge-cat">${s.category}</span></td>
+                        <td><span class="badge ${sClass}">${s.sentiment}</span></td>
+                        <td><span class="urgency-pill">${s.urgency}</span></td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+            } catch (err) {
+                console.error('Failed to load admin summary:', err);
             }
         }
-        loadStats();
     </script>
 </body>
 </html>
